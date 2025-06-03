@@ -124,6 +124,10 @@
       }
       catch(err) {
         console.log('Caught the following error:', err);
+        //make caught errors show in TrackJS (otherwise there wouldn't be much to show there)
+        if (window.TrackJS) {
+          window.TrackJS.track(err);
+        }
       }
       finally {
         console.log("Calculation Finished")
