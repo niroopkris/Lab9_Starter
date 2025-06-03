@@ -87,7 +87,13 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
+    // TrackJS 
+    window.TrackJS && TrackJS.install({ 
+      token: "b23e8c54a37d4f30b54aa91ea912a0e7"
+    });
+    
     //custom error
     class DivideByZeroError extends Error {
         constructor(message) {
