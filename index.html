@@ -88,20 +88,107 @@
   </main>
 
   <script>
+    //custom error
+    class DivideByZeroError extends Error {
+        constructor(message) {
+            super(message);
+            this.name = 'DivideByZeroError';
+        }
+    }
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
+    //error handling done here (throw/try/catch)
       e.preventDefault();
       let output = document.querySelector('output');
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try {
+        if (operator == "/" && secondNum == "0") {
+            throw new DivideByZeroError("Can't divide by zero!");
+        }
+
+        if (isNaN(eval(`${firstNum} ${operator} ${secondNum}`))) {
+            throw new Error('Invalid result (NaN)');
+        }
+        
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      }
+      catch(err) {
+        console.log('Caught the following error:', err);
+      }
+      finally {
+        console.log("Calculation Finished")
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+
+    //global error handler. trigger button will cause an error which this will catch
+    window.onerror = function(errorMessage, url, lineNumber) {
+        console.log('Global Error Triggered: "', errorMessage, '" at line', lineNumber);
+    };
+
+    errorBtns.forEach(btn => {
+        btn.addEventListener('click', (event) => {
+            if (btn.textContent == "Console Log") {
+                console.log('Console Log Example');
+            }
+            if (btn.textContent == "Console Error") {
+                console.error('Console Error Example');
+            }
+            if (btn.textContent == "Console Count") {
+                console.count('Console Count Label');
+            }
+            if (btn.textContent == "Console Warn") {
+                console.warn('Console Warn Example');
+            }
+            if (btn.textContent == "Console Assert") {
+                console.assert(false, 'Console Assert Message');
+            }
+            if (btn.textContent == "Console Clear") {
+                console.clear();
+            }
+            if (btn.textContent == "Console Dir") {
+                console.dir(btn);
+            }
+            if (btn.textContent == "Console dirxml") {
+                console.dirxml(btn);
+            }
+            if (btn.textContent == "Console Group Start") {
+                console.group('Console Group Example')
+                console.log("I'm inside the group");
+            }
+            if (btn.textContent == "Console Group End") {
+                console.groupEnd();
+            }
+            if (btn.textContent == "Console Table") {
+                console.table(errorBtns.splice(0,3));
+            }
+            if (btn.textContent == "Start Timer") {
+                console.time('Timer Example');
+            }
+            if (btn.textContent == "End Timer") {
+                console.timeEnd('Timer Example');
+            }
+            if (btn.textContent == "Console Trace") {
+                function traceFunc1() {
+                    function traceFunc2() {
+                        console.trace('Console Trace Example');
+                    }
+                    traceFunc2();
+                }
+                traceFunc1();
+            }
+            if (btn.textContent == "Trigger a Global Error") {
+                undefinedVariable; //trigger
+            }
+        });
+    });
   </script>
 </body>
 
